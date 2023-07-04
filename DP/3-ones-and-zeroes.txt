@@ -1,0 +1,67 @@
+//Memoization
+
+  vector<int> count(string str){
+
+        int zero=0,one=0;
+
+        for(auto c: str){
+
+            if(c=='0') zero++;
+            else one++;
+
+        }
+
+        return {zero,one};
+    }
+   int helper(int i, int m, int n, vector<string>& strs,vector<vector<vector<int>>>& dp){
+
+        if(i==strs.size()) return 0;
+
+
+        if(dp[i][m][n]!=-1) return dp[i][m][n];
+
+        vector<int> v = count(strs[i]);
+
+        int take=0;
+        int notTake=0;
+        if(m-v[0]>=0 and n-v[1]>=0){
+             take = 1 + helper(i+1, m-v[0], n-v[1],strs,dp);
+        }
+
+         notTake = helper(i+1,m,n,strs,dp);
+
+        return dp[i][m][n] = max(take,notTake);
+        
+
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<vector<int>>> dp(strs.size()+1, vector<vector<int>>(m+1,vector<int>(n+1,-1)));
+        return helper(0,m,n,strs,dp);
+    }
+
+
+
+
+//Tabulation 
+
+ int findMaxForm(vector<string>& strs, int m, int n) {
+        int s = strs.size();
+        vector<vector<vector<int>>> dp(s + 1, vector<vector<int>>(m + 1, vector<int>(n + 1)));
+
+        for(int i=s-1; i>=0; i--) {
+            for(int j=0; j<=m; j++) {
+                for(int k=0; k<=n; k++) {
+                    int notpick = dp[i + 1][j][k];
+                    int cnt0 = 0, cnt1 = 0, pick = 0;
+                    for(char c : strs[i]) {
+                        c == '0' ? cnt0++ : cnt1++;
+                    }
+                    if(j >= cnt0 && k >= cnt1) {
+                        pick = 1 + dp[i + 1][j - cnt0][k - cnt1];
+                    }
+                    dp[i][j][k] = max(pick, notpick);
+                }
+            }
+        }
+        return dp[0][m][n];
+    }

@@ -1,0 +1,49 @@
+
+   int mod = 1e9+7;
+    int dx[] = {2,2,1,1,-2,-2,-1,-1};
+    int dy[] = {1,-1,2,-2,1,-1,2,-2};
+
+    
+    int solve(int i, int j, int n, vector<vector<vector<int>>>& dp){
+
+        if(i<0 || j<0 || i>3 || j>2 || (i==3 && j==0) || (i==3 && j==2) )return 0;
+
+        int ans = 0;
+
+        if(n==0) return 1;
+
+        if(dp[i][j][n]!=-1) return dp[i][j][n];
+
+        for(int itr=0; itr<8; itr++ ){
+
+            int n_i= i+dx[itr];
+            int n_j= j+dy[itr];
+            ans  = (ans + solve(n_i,n_j, n-1, dp))%mod;
+         
+        }
+
+
+        return dp[i][j][n]=ans%mod;
+
+    }
+    int knightDialer(int n) {
+        
+        vector<vector<vector<int>>> dp(5, vector<vector<int>>(4,vector<int>(n+1,-1)));
+        int ans = 0;
+
+        for(int i=0; i<4; i++){
+
+            for(int j=0; j<3; j++){
+
+                if(i==3 and (j==0 or j==2)){
+                     continue;
+                }
+
+                ans = (ans + solve(i,j,n-1,dp))%mod;
+            }
+        }
+
+
+        return ans%mod;
+        
+    }
