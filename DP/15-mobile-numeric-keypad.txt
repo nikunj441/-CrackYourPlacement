@@ -1,0 +1,45 @@
+int dx[5] = {0,1,0,-1,0};
+    int dy[5] = {0,0,-1,0,1};
+    long long solve(int i, int j, int n, vector<vector<vector<long long>>>& dp){
+
+        if(i<0 || j<0 || i>3 || j>2 || (i==3 && j==0) || (i==3 && j==2) )return 0;
+
+        long long ans = 0;
+
+        if(n==0) return 1;
+
+        if(dp[i][j][n]!=-1) return dp[i][j][n];
+
+        for(int itr=0; itr<5; itr++ ){
+
+            int n_i= i+dx[itr];
+            int n_j= j+dy[itr];
+            ans  = (ans + solve(n_i,n_j, n-1, dp));
+         
+        }
+
+
+        return dp[i][j][n]=ans;
+
+    }
+	long long getCount(int n)
+	{
+		// Your code goes here
+		vector<vector<vector<long long>>> dp(5, vector<vector<long long>>(4,vector<long long>(n+1,-1)));
+        long long ans = 0;
+
+        for(int i=0; i<4; i++){
+
+            for(int j=0; j<3; j++){
+
+                if(i==3 and (j==0 or j==2)){
+                     continue;
+                }
+
+                ans = (ans + solve(i,j,n-1,dp));
+            }
+        }
+
+
+        return ans;
+	}
