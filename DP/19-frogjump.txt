@@ -1,0 +1,31 @@
+bool canCross(vector<int>& stones) {
+        
+        unordered_map<int, unordered_set<int>> mp;
+
+        for(auto x: stones){
+            mp.insert({x, unordered_set<int>()});
+        }
+        mp[stones[0]].insert(1);
+
+
+        for( auto currStone: stones){
+
+            for(auto jumps: mp[currStone]){
+
+                int newPosition = jumps + currStone;
+
+                if(newPosition == stones[stones.size()-1]) return true;
+
+                if(mp.find(newPosition) != mp.end()){
+                    
+                    if(jumps-1>0)
+                    mp[newPosition].insert(jumps-1); 
+                    mp[newPosition].insert(jumps); 
+                    mp[newPosition].insert(jumps+1); 
+                }
+                
+            }
+        }
+
+        return false;
+    }
