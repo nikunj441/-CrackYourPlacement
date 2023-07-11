@@ -1,0 +1,20 @@
+ int solve(int i, int j, string & s, vector<vector<int>>& dp){
+
+        if(i>=j) return 0;
+        int ops=0;
+
+        if(dp[i][j]!=-1) return dp[i][j];
+
+        if(s[i]==s[j]){
+            ops = solve(i+1,j-1,s,dp);
+        }else{
+            ops = min(solve(i,j-1,s,dp), solve(i+1,j,s,dp))+1;
+        }
+
+        return dp[i][j]=ops;
+    }
+    int minInsertions(string s) {
+        int n = s.size();
+        vector<vector<int>> dp(n,vector<int>(n,-1));
+        return solve(0,s.size()-1, s,dp);
+    }
