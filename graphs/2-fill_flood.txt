@@ -1,0 +1,21 @@
+ void dfs(vector<vector<int>> & adj, int sr, int sc, int color, int parent){
+        vector<vector<int>> dirs = {{-1,0},{0,1},{1,0},{0,-1}};
+
+        if(sr<0 || sr>=adj.size() || sc<0 || sc>=adj[0].size()) return;
+        if(adj[sr][sc]==parent){
+            adj[sr][sc]=color;
+
+            for(auto d: dirs){
+                dfs(adj, sr+d[0], sc+d[1], color, parent);
+            }
+
+        }
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        
+        
+        if(image[sr][sc]!=color)
+        dfs(image,sr,sc,color,image[sr][sc]);
+
+        return image;
+    }
