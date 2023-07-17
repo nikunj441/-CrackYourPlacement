@@ -1,0 +1,31 @@
+string decodeString(string s) {
+        stack<string> chars;
+        stack<int> nums;
+        string currStr;
+        int currNo = 0;
+        for(char c: s){
+         if(isdigit(c)){
+            currNo =  currNo*10 + (c-'0');
+            
+        }
+        else if(c=='['){
+            chars.push(currStr);
+            nums.push(currNo);
+            currStr = "";
+            currNo = 0;
+    
+        }
+        
+        else if(c==']'){
+            string tmp = currStr;
+            currStr = chars.top();
+            chars.pop();
+            for(int i=nums.top(); i>0; i--) currStr += tmp;
+            nums.pop();
+
+        }else currStr+=c;
+       
+        }
+
+        return currStr;
+    }
