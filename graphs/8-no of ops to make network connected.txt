@@ -1,0 +1,41 @@
+   void prepareAdjList(unordered_map<int, list<int>>& adjList, vector<vector<int>>& con){
+
+        for(int i=0; i<con.size(); i++){
+            int u  = con[i][0];
+            int v  = con[i][1];
+            adjList[u].push_back(v);
+            adjList[v].push_back(u);
+        }
+    }
+
+    void dfs(int node, unordered_map<int, bool>& vis,unordered_map<int, list<int>>& adjList ){
+        vis[node]=true;
+
+        for(auto n: adjList[node]){
+            if(!vis[n]){
+                dfs(n,vis,adjList);
+            }
+        }
+    }
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        int len = connections.size();
+        if(len<n-1) return -1;
+        vector<int> adj[n];
+        unordered_map<int, list<int>> adjList;
+        unordered_map<int, bool> vis;
+        int extraCables = 0;   //checking extra cables not needed
+        int ans  = 0;
+
+        //Prepare AdjList
+        prepareAdjList(adjList, connections);
+
+        for(int i=0; i<n; i++){
+            if(!vis[i]){
+                    dfs(i,vis,adjList);
+                    ans++;
+            }
+            
+        }
+        return ans-1;
+
+    }
